@@ -1,0 +1,109 @@
+1561. Maximum Number of Coins You Can Get
+Medium
+971
+118
+Companies
+There are 3n piles of coins of varying size, you and your friends will take piles of coins as follows:
+
+In each step, you will choose any 3 piles of coins (not necessarily consecutive).
+Of your choice, Alice will pick the pile with the maximum number of coins.
+You will pick the next pile with the maximum number of coins.
+Your friend Bob will pick the last pile.
+Repeat until there are no more piles of coins.
+Given an array of integers piles where piles[i] is the number of coins in the ith pile.
+
+Return the maximum number of coins that you can have.
+
+ 
+
+Example 1:
+
+Input: piles = [2,4,1,2,7,8]
+Output: 9
+Explanation: Choose the triplet (2, 7, 8), Alice Pick the pile with 8 coins, you the pile with 7 coins and Bob the last one.
+Choose the triplet (1, 2, 4), Alice Pick the pile with 4 coins, you the pile with 2 coins and Bob the last one.
+The maximum number of coins which you can have are: 7 + 2 = 9.
+On the other hand if we choose this arrangement (1, 2, 8), (2, 4, 7) you only get 2 + 4 = 6 coins which is not optimal.
+Example 2:
+
+Input: piles = [2,4,5]
+Output: 4
+Example 3:
+
+Input: piles = [9,8,7,6,5,1,2,3,4]
+Output: 18
+ 
+
+Constraints:
+
+3 <= piles.length <= 105
+piles.length % 3 == 0
+1 <= piles[i] <= 104
+Accepted
+63.1K
+Submissions
+79.9K
+Acceptance Rate
+79.0%
+
+
+
+
+C++ || HEAPs || Explained Appraoch || Commenetd Code
+_prabal_singh_
+100 Days Badge 2022
+4
+a minute ago
+Intuition
+Mathematical picking of values as per the need [GAME THOERY].
+
+Approach
+We wil make choose triplets as :
+1 - Highest value in all [alice]
+2 - Second Highest value in all [me]
+3 - Smallest value in all [bob]
+We will choose n triplets , as total number of piles is 3n.
+
+And, add to the result sum , the second value [me] for each triplet.
+
+download (2).jfif
+
+Complexity
+Time complexity : O(nlogn)
+Space complexity : O(n)
+Code
+class Solution {
+public:
+    int maxCoins(vector<int>& piles) {
+        
+        //using max heaps to find the highest and second highest value for each iteration
+        priority_queue <int, vector<int>, greater<int>> minh;
+        //using min heaps to find the smallest value for each iteration
+        priority_queue <int> maxh;
+        int n = piles.size()/3;
+           
+        //pushing all values in the heap
+        for(int i=0; i<piles.size(); i++)   {
+            minh.push(piles[i]);
+            maxh.push(piles[i]);
+        }
+
+        int res=0;
+        //performing n iterations for n triplets' evaluation
+        for(int i=0; i<n; i++)  {
+            maxh.pop();
+            //2nd highets value in each triplet
+            int use = maxh.top();
+            maxh.pop();
+            minh.pop();
+            res += use;
+        }
+
+        return res;
+    }
+};
+download (1).jfif
+
+0
+0
+
