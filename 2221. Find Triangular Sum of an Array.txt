@@ -1,0 +1,92 @@
+2221. Find Triangular Sum of an Array
+Medium
+768
+39
+Companies
+You are given a 0-indexed integer array nums, where nums[i] is a digit between 0 and 9 (inclusive).
+
+The triangular sum of nums is the value of the only element present in nums after the following process terminates:
+
+Let nums comprise of n elements. If n == 1, end the process. Otherwise, create a new 0-indexed integer array newNums of length n - 1.
+For each index i, where 0 <= i < n - 1, assign the value of newNums[i] as (nums[i] + nums[i+1]) % 10, where % denotes modulo operator.
+Replace the array nums with newNums.
+Repeat the entire process starting from step 1.
+Return the triangular sum of nums.
+
+ 
+
+Example 1:
+
+
+Input: nums = [1,2,3,4,5]
+Output: 8
+Explanation:
+The above diagram depicts the process from which we obtain the triangular sum of the array.
+Example 2:
+
+Input: nums = [5]
+Output: 5
+Explanation:
+Since there is only one element in nums, the triangular sum is the value of that element itself.
+ 
+
+Constraints:
+
+1 <= nums.length <= 1000
+0 <= nums[i] <= 9
+Accepted
+51.1K
+Submissions
+65K
+Acceptance Rate
+78.5%
+
+
+
+C++ || SIMPLE || Math || Generating Downward Triangle || EXPLAINED
+_prabal_singh_
+100 Days Badge 2022
+4
+a few seconds ago
+Intuition
+Generating Downward Triangle with givern Condition.
+
+Approach
+Every new layer is 1 element less than its parent layer. Generate such layers till size of layer == 1.
+Element in child layer[i] = (parent layer[i]+parent layer[i+1] ) %10.
+NOT USING COMBINATORICS
+
+download (2).jfif
+
+Complexity
+Time complexity : O(sum of n natural numbers)
+Space complexity : O(sum of n natural numbers)
+Code
+class Solution {
+public:
+    int triangularSum(vector<int>& nums) {
+        int n = nums.size();
+        //space for downward triangle.
+        vector<vector<int>> util;
+        //pushing initial parent layer in it.
+        util.push_back(nums);
+
+        for(int i=1; i<n; i++) {
+            vector<int> layer (n-i, 0);
+            //evaluating the child layer
+            for(int j=0; j<n-i; j++)    {
+                layer[j] = (util[i-1][j] + util[i-1][j+1])%10;
+            }
+            //pushing child layer int util, to act as parent layer for its child
+            util.push_back(layer);
+        }   
+
+        //returning back the latest layer(size==1)
+        return util[n-1][0];
+    }
+};
+sad-thumbs-up-cat.3.meme.webp
+
+0
+0
+
