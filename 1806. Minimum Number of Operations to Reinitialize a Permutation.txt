@@ -1,0 +1,131 @@
+1806. Minimum Number of Operations to Reinitialize a Permutation
+Medium
+272
+146
+Companies
+You are given an even integer n​​​​​​. You initially have a permutation perm of size n​​ where perm[i] == i​ (0-indexed)​​​​.
+
+In one operation, you will create a new array arr, and for each i:
+
+If i % 2 == 0, then arr[i] = perm[i / 2].
+If i % 2 == 1, then arr[i] = perm[n / 2 + (i - 1) / 2].
+You will then assign arr​​​​ to perm.
+
+Return the minimum non-zero number of operations you need to perform on perm to return the permutation to its initial value.
+
+ 
+
+Example 1:
+
+Input: n = 2
+Output: 1
+Explanation: perm = [0,1] initially.
+After the 1st operation, perm = [0,1]
+So it takes only 1 operation.
+Example 2:
+
+Input: n = 4
+Output: 2
+Explanation: perm = [0,1,2,3] initially.
+After the 1st operation, perm = [0,2,1,3]
+After the 2nd operation, perm = [0,1,2,3]
+So it takes only 2 operations.
+Example 3:
+
+Input: n = 6
+Output: 4
+ 
+
+Constraints:
+
+2 <= n <= 1000
+n​​​​​​ is even.
+Accepted
+15.6K
+Submissions
+21.7K
+Acceptance Rate
+71.9%
+
+
+
+
+
+
+C++ || Recursive Simulation || Explained || Brute Force
+_prabal_singh_
+100 Days Badge 2022
+4
+a few seconds ago
+Intuition
+Simulation with the help of RECURSION.
+
+Approach
+We will operate with 3 arrays at a time :
+
+original = original permutation for comparison
+vec1 = using as parent permutaion to create new permutaion in following step.
+vec2 = the new permutaion formed from vec1.
+Using int val, in each permutation modification step : to check if the new permuation is equal to the original permutation.
+-> if val=0, original permutaion formed , thus return.
+-> else if val!=0, call for next recursive modification.
+
+Druing recursive appraoch for next tranformation we interchange vec2 with vec1, as now this will be the new parent permutation in its child permutation fromation.
+
+download (2).jfif
+
+Complexity
+Time complexity : O(number of modification steps * n)
+Space complexity : O(n)
+Code
+class Solution {
+public:
+    void func(vector<int> original, vector<int> &vec1, vector<int> &vec2, int &cnt, int n)   {
+        //variable for comparing original with next permutaion formed
+        int val=0;
+
+        for(int i=0; i<n; i++)  {
+            //even index modification 
+            if(i%2==0)  {
+                vec2[i] = vec1[i/2];
+                val += abs(vec2[i]-original[i]);
+            }
+            //odd index modification 
+            else if(i%2==1) {
+                vec2[i] = vec1[(n/2)+((i-1)/2)];
+                val += abs(vec2[i]-original[i]);
+            }
+        }
+
+        cnt++;
+
+        //case for orginal permutation obtained.
+        if(val==0)  {
+            return;
+        }
+        //case for next permutation modifictaion needed.
+        else {
+            func(original,vec2,vec1,cnt,n);
+        }
+
+    }
+
+    int reinitializePermutation(int n) {
+
+        //declarinh helping vectors & variables
+        vector<int> vec1(n,0);
+        for(int i=0; i<n; i++) vec1[i]=i;
+        vector<int> vec2(n,0);
+        int cnt = 0;
+
+        //recurisve call
+        func(vec1,vec1,vec2,cnt,n);
+
+        return cnt;
+    }
+};
+download (1).jfif
+
+0
+0
+
