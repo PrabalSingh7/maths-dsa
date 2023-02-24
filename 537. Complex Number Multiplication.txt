@@ -1,0 +1,151 @@
+537. Complex Number Multiplication
+Medium
+606
+1.2K
+Companies
+A complex number can be represented as a string on the form "real+imaginaryi" where:
+
+real is the real part and is an integer in the range [-100, 100].
+imaginary is the imaginary part and is an integer in the range [-100, 100].
+i2 == -1.
+Given two complex numbers num1 and num2 as strings, return a string of the complex number that represents their multiplications.
+
+ 
+
+Example 1:
+
+Input: num1 = "1+1i", num2 = "1+1i"
+Output: "0+2i"
+Explanation: (1 + i) * (1 + i) = 1 + i2 + 2 * i = 2i, and you need convert it to the form of 0+2i.
+Example 2:
+
+Input: num1 = "1+-1i", num2 = "1+-1i"
+Output: "0+-2i"
+Explanation: (1 - i) * (1 - i) = 1 + i2 - 2 * i = -2i, and you need convert it to the form of 0+-2i.
+ 
+
+Constraints:
+
+num1 and num2 are valid complex numbers.
+Accepted
+86.9K
+Submissions
+121.7K
+Acceptance Rate
+71.4%
+
+
+
+
+
+C++ || Basic String Operations || Simple math calculations
+_prabal_singh_
+100 Days Badge 2022
+4
+a minute ago
+Intuition
+Basic math calculation & string conversion.
+
+Approach
+We will first convert the string into real number part along with its sign and imaginary number oart with its sign part seperately.
+Lets say parts are: signr1r1 {real part of first string with sign}
+signi1i1 {imaginary part of first string with sign}
+signr2r2 {real part of second string with sign}
+signi2i2 {imaginary part of second string with sign}
+
+Now , the resultant will be (basic math calculation)
+REAL PART = (signr1r1signr2r2) - (signi1i1signi2i2)
+IMAGINARY PART = (signr1r1signi2i2) + (signr2r2signi1i1)
+
+download (2).jfif
+
+Complexity
+Time complexity : O(n)
+Space complexity : O(1)
+Code
+class Solution {
+public:
+    //function to convert string to value (as described above)
+    void stringToNumber(string s, int &real, int &img, int &signr, int &signi)   {
+        int idx=0;
+
+        //checking the sign for real part
+        if(s[idx]=='-')   {   
+            idx++;
+            signr=-1;
+        }
+
+        //evaluating the real number
+        while(s[idx]!='+')  {
+            real *= 10;
+            real += s[idx] - '0';
+            idx++;
+        }
+        idx++;
+
+        //checking the sign for imaginary part
+        if(s[idx]=='-')   {   
+            signi=-1;
+            idx++;
+        }
+
+        //evaluating the imaginary number
+        while(s[idx]!='i')  {
+            img *= 10;
+            img += s[idx] - '0';
+            idx++;
+        }
+
+    }
+
+    //function to convert values to numbers 
+    void numberToString(int pr, int pi, string &res)    {
+        //checking the sign for real part
+        if(pr<0)    {
+            res += '-';
+            pr *= -1;
+        }
+
+        //using to_string() function to convert number to string
+        string util = to_string(pr);
+        res += util;
+
+        res += '+';
+
+        //checking the sign for imaginary part
+        if(pi<0)    {
+            res += '-';
+            pi *= -1;
+        }
+
+        //using to_string() function to convert number to string
+        string utility = to_string(pi);
+        res += utility;
+        
+        res += 'i';
+    }
+
+    string complexNumberMultiply(string num1, string num2) {
+        
+        //declaring helping variables
+        string res;
+        int r1=0,i1=0,r2=0,i2=0,signr1=1,signi1=1,signr2=1,signi2=1;
+
+        //coverting the num1 & num2 string to values fro calculations
+        stringToNumber(num1,r1,i1,signr1,signi1);
+        stringToNumber(num2,r2,i2,signr2,signi2);
+
+        //formula(s) for real and imaginary parts
+        int pr = (r1*r2*signr1*signr2) - (i1*i2*signi1*signi2);
+        int pi = (signr1*r1*signi2*i2) + (signr2*r2*signi1*i1);
+
+        //coverting the real&img numbers back to strings
+        numberToString(pr,pi,res);
+        return res;
+    }
+};
+download (1).jfif
+
+0
+0
+
