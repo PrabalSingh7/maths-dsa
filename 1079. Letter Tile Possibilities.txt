@@ -1,0 +1,69 @@
+1079. Letter Tile Possibilities
+Medium
+2.2K
+62
+Companies
+You have n  tiles, where each tile has one letter tiles[i] printed on it.
+
+Return the number of possible non-empty sequences of letters you can make using the letters printed on those tiles.
+
+ 
+
+Example 1:
+
+Input: tiles = "AAB"
+Output: 8
+Explanation: The possible sequences are "A", "B", "AA", "AB", "BA", "AAB", "ABA", "BAA".
+Example 2:
+
+Input: tiles = "AAABBC"
+Output: 188
+Example 3:
+
+Input: tiles = "V"
+Output: 1
+ 
+
+Constraints:
+
+1 <= tiles.length <= 7
+tiles consists of uppercase English letters.
+Accepted
+83.9K
+Submissions
+110.4K
+Acceptance Rate
+76.0%
+
+
+class Solution {
+public:
+    int numTilePossibilities(string tiles) {
+	    // counts represents the number of occurences of given character in input string "tiles"
+		// counts[0] is the number of occurences of char 'A'
+		// counts[1] is the number of occurences of char 'B'
+		// ...
+		// counts[25] is the number of occurences of char 'Z'
+        int counts[26] {}; 
+        for (const auto &c :  tiles) {  // count the number of occurences of each character in the alphabet
+            counts[c - 'A']++;
+        }
+        int result = 0;
+        rec(counts, result);
+        return result;
+    }
+    
+	// rec stands for "recursive function". It is a pretty straightforward backtracking approach
+	// both arguments are "modifiable", because they are passed by reference.
+	// for non-c++ programmers -> it means that rec function modifies `counts` array and `result` integer passed `from numTilePossibilities` function. it also means that no cycles / memory is used for copying.
+    void rec(int counts[26], int &result) {
+        for(int i = 0; i < 26; ++i) {
+            if (counts[i]){
+                counts[i]--;
+                result++;
+                rec(counts, result);
+                counts[i]++;
+            }
+        }
+    }
+};
