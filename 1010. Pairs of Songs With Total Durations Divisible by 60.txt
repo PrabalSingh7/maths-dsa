@@ -54,3 +54,51 @@ public:
         return count;
     }
 };
+
+
+
+Pairs of Songs With Total Durations Divisible by 60
+
+
+⛳✨ C++ || Math + Counting || 💻📃🖊 Commented Code
+_prabal_singh_
+100 Days Badge 2022
+15
+a few seconds ago
+Intuition
+Basic Mathematical Counting Problem .
+
+Approach
+We, will maintain an map for storing all the pre-occured elements AND for each index element search for the possible partner (forming appropriate pair).
+This pssible partner value will simply be in the range of [0,1000] as that's the range of elements [0,500]. AND this means multiples of 60 from 0 to 16.
+Hence, possible partner will be
+for i in range [0,17]
+  possible_partner = (60 * i) - curr_index_element
+Then incremnet the pair_count by the number of occurences of possible_partner.
+download (1).jfif
+
+Complexity
+Time complexity : O(N*16)
+Space complexity: O(N)
+Code
+class Solution {
+public:
+    int numPairsDivisibleBy60(vector<int>& time) {
+        //helping data structure
+        unordered_map<int,int> mp;
+        int pair_count=0;
+
+        for(auto curr_index_element : time)  {
+            //trying to find possible pair partner 
+            for(int i=curr_index_element/60; i<17; i++) {
+                int possible_partner = (60*i) - curr_index_element;
+                //incrementing our pair_count by number of its occurence
+                pair_count += mp[possible_partner];
+            }
+            mp[curr_index_element]++;
+        }
+
+        return pair_count;
+    }
+};
+images.jfif
